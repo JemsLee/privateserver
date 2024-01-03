@@ -11,7 +11,7 @@ main feature:
 Operating environment:
 Jdk11
 Springboot2.2.4
-
+Redis
 
 
 
