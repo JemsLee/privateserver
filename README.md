@@ -9,10 +9,9 @@ main feature:
 
 
 Operating environment:<br>
-Jdk11<br>
-Springboot2.2.4<br>
-Redis<br>
-
+1. Jdk11<br>
+2. Springboot2.2.4<br>
+3. Redis<br>
 
 
 start up:
@@ -26,7 +25,7 @@ $#>java -jar privateimserver-1.0.0-SNAPSHOT.jar [1/2],[ip],[port]<br>
 2.2. Create docker-compose.yml<br>
 2.3. Create dockerfile again<br>
 2.4. docker build -t privateimserver:v1.0.0.<br>
-2.5 docker run -itd -p [port]:[port] --name privateimserver_01 [Image name] [1/2],[ip],[port]<br>
+2.5. docker run -itd -p [port]:[port] --name privateimserver_01 [Image name] [1/2],[ip],[port]<br>
 
 
 3. Operation parameter description: [1/2],[ip],[port]<br>
