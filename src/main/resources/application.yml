@@ -1,0 +1,18 @@
+server:
+  port: 6038
+
+redis:
+  test:
+    ip: xxx.xxx.com
+    port: 6379
+    user:
+    password:
+    db: 15
+    iscluster: 0
+  pro:
+    ip: xxx.xxx.com
+    port: 6379
+    user:
+    password:
+    db: 1
+    iscluster: 1

@@ -1,0 +1,57 @@
+package com.pim.server.constants;
+
+import lombok.Data;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+@Data
+public class CommParameters {
+
+    private static CommParameters commParameters;
+
+    private CommParameters() {
+
+    }
+
+    public static CommParameters instance() {
+
+        if (null == commParameters) {
+            commParameters = new CommParameters();
+            commParameters.initExecutor();
+        }
+
+        return commParameters;
+    }
+
+    private static final int CORE_POOL_SIZE = 200;
+    private static final int MAX_POOL_SIZE = 10000;
+    private static final int QUEUE_CAPACITY = 1;
+    private static final Long KEEP_ALIVE_TIME = 1L;
+    ThreadPoolExecutor executor;
+    private void  initExecutor(){
+        executor = new ThreadPoolExecutor(
+                CORE_POOL_SIZE,
+                MAX_POOL_SIZE,
+                KEEP_ALIVE_TIME,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(QUEUE_CAPACITY),
+                new ThreadPoolExecutor.CallerRunsPolicy());
+    }
+
+
+
+    boolean redisOk= false;
+
+    String serverIp = "";
+    int serverPort = -1;
+
+    ConcurrentHashMap<String, String> onlineUser = new ConcurrentHashMap<>();
+
+
+
+
+
+}
