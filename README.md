@@ -19,29 +19,29 @@ start up:
 
 1. Jar file running mode
 
-$#>java -jar privateimserver-1.0.0-SNAPSHOT.jar 1,<ip>,<port>
+$#>java -jar privateimserver-1.0.0-SNAPSHOT.jar [1/2],[ip],[port]
 
 
 
 2. docker running mode
 
-2.1. Install docker environment
+ 2.1. Install docker environment
 
-2.2. Create docker-compose.yml
+ 2.2. Create docker-compose.yml
 
-2.3. Create dockerfile again
+ 2.3. Create dockerfile again
 
-2.4. docker build -t privateimserver:v1.0.0.
+ 2.4. docker build -t privateimserver:v1.0.0.
 
-2.5 docker run -itd -p <port>:<port> --name privateimserver_01 <Images name> 1,<ip>,<port>
-
-
+ 2.5 docker run -itd -p [port]:[port] --name privateimserver_01 [Image name] [1/2],[ip],[port]
 
 
-3. Operation parameter description: 1,<ip>,<port>
 
-1: Test environment, 2: Production environment
 
-<ip>: IP address of the device running this service
+3. Operation parameter description: [1/2],[ip],[port]
 
-<port>: IM server external service port
+[1]: Test environment, [2]: Production environment 
+
+[ip]: IP address of the device running this service
+
+[port]: IM server external service port
