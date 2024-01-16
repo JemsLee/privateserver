@@ -31,6 +31,8 @@ public class MessageService extends Thread{
         }
 
 
+
+
         //Pretend to be an object
         MessageBody messageBody = JSON.parseObject(clientMessage, MessageBody.class);
         //set server receive time

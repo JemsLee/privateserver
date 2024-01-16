@@ -3,6 +3,8 @@ package com.pim.server.events;
 import com.alibaba.fastjson.JSONObject;
 import com.pim.server.beans.MessageBody;
 import com.pim.server.beans.PublishMessageBody;
+import com.pim.server.constants.CommParameters;
+import com.pim.server.dbser.ChatMessageService;
 import com.pim.server.netty.PrivateChannelSupervise;
 import com.pim.server.utils.EncryptionDecryptionUtils;
 import com.pim.server.utils.RedisUtils;
@@ -10,6 +12,7 @@ import io.netty.channel.Channel;
 import org.redisson.api.RTopic;
 import org.redisson.codec.SerializationCodec;
 
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentMap;
 
 public class E1000001 {
@@ -22,6 +25,11 @@ public class E1000001 {
         String toUid = messageBody.getToUid();
 
         JSONObject json = (JSONObject) JSONObject.toJSON(messageBody);
+
+        //Save chat message for web
+        ChatMessageService.save(messageBody);
+
+
         Channel channel = PrivateChannelSupervise.getChannelByUserId(toUid);
 
         if (channel != null) {
@@ -49,8 +57,12 @@ public class E1000001 {
             }else {
 
                 if(Integer.parseInt(messageBody.getIsCache()) == 1){
-                    String offlineKey = toUid + "_offline";
-                    RedisUtils.instance().getRedissonClient().getMap(offlineKey).put(messageBody.getSTimest(),json.toJSONString());
+                    LinkedList<String> linkedList = CommParameters.instance().getTempOfflineMessage().get(toUid);
+                    if(linkedList == null){
+                        linkedList = new LinkedList<>();
+                    }
+                    linkedList.addFirst(json.toJSONString());
+                    CommParameters.instance().getTempOfflineMessage().put(toUid,linkedList);
                 }
 
             }

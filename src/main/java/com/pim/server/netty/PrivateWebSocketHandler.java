@@ -9,12 +9,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.*;
 import org.springframework.stereotype.Component;
 
-/**
- * WebSocket的接受机制处理机
- * 版本：1.0.0
- * 2022-01-03
- * 作者：Jem.Lee
- */
 
 @Component
 @ChannelHandler.Sharable
@@ -27,7 +21,6 @@ public class PrivateWebSocketHandler extends SimpleChannelInboundHandler<Object>
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
         try {
             if (msg instanceof WebSocketFrame) {
-                //处理websocket客户端的消息
                 handlerWebSocketFrame(ctx, (WebSocketFrame) msg);
             }
         } catch (Exception e) {
@@ -100,7 +93,7 @@ public class PrivateWebSocketHandler extends SimpleChannelInboundHandler<Object>
 
 
         } catch (Exception exception) {
-
+            exception.printStackTrace();
         }
 
     }

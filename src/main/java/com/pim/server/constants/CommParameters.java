@@ -1,7 +1,9 @@
 package com.pim.server.constants;
 
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 
+import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -49,9 +51,10 @@ public class CommParameters {
     int serverPort = -1;
 
     ConcurrentHashMap<String, String> onlineUser = new ConcurrentHashMap<>();
+    ConcurrentHashMap<String, LinkedList<String>> tempOfflineMessage = new ConcurrentHashMap<>();
 
 
-
+    public HikariDataSource liveDataSource;
 
 
 }

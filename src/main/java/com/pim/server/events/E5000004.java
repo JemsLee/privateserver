@@ -1,6 +1,7 @@
 package com.pim.server.events;
 
 import com.pim.server.beans.MessageBody;
+import com.pim.server.dbser.ChatMessageService;
 import com.pim.server.utils.EncryptionDecryptionUtils;
 import com.pim.server.utils.RedisUtils;
 import io.netty.channel.Channel;
@@ -11,6 +12,10 @@ import java.util.Map;
 public class E5000004 {
 
     public static void sendMessageToGroup(MessageBody messageBody, Channel channel) {
+
+
+        //Save chat message for web
+        ChatMessageService.save(messageBody);
 
         String groupId = messageBody.getGroupId();
         String fromUid = messageBody.getFromUid();

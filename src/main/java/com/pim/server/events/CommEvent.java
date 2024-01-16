@@ -8,13 +8,18 @@ import com.pim.server.beans.PublishOffLineBody;
 import com.pim.server.constants.CommParameters;
 import com.pim.server.message.MessageService;
 import com.pim.server.netty.PrivateChannelSupervise;
+import com.pim.server.utils.EncryptionDecryptionUtils;
 import com.pim.server.utils.RedisUtils;
 import com.pim.server.utils.TimeUtils;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.redisson.api.RMap;
 import org.redisson.api.RTopic;
 import org.redisson.codec.SerializationCodec;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
@@ -63,6 +68,7 @@ public class CommEvent {
         ConcurrentMap<String, String> userInfoCache = RedisUtils.instance().getRedissonClient().getMap(fromUid + "_online");
         String serverIp = userInfoCache.get("serverIp");
         String serverPort = userInfoCache.get("serverPort");
+        if(serverIp != null && serverPort != null)
         if(CommParameters.instance().getServerIp().indexOf(serverIp) >= 0
         && Integer.parseInt(serverPort) == CommParameters.instance().getServerPort()){
             RedisUtils.instance().getRedissonClient().getMap(fromUid + "_online").delete();
@@ -153,6 +159,34 @@ public class CommEvent {
             }
 
         });
+
+    }
+
+
+    public static void closeDbConn(Connection conn, PreparedStatement ptmt, ResultSet rs) {
+        try {
+            if (rs != null)
+                rs.close();
+            if (ptmt != null)
+                ptmt.close();
+            if (conn != null)
+                conn.close();
+        } catch (Exception e) {
+        }
+    }
+
+
+    public static void sendOfflineMessage(String toUid,Channel channel){
+
+        String offlineKey = toUid + "_offline";
+        RMap<String,String>  rMap = RedisUtils.instance().getRedissonClient().getMap(offlineKey);
+        Map<String,String> temp = rMap.readAllMap();
+        String key = EncryptionDecryptionUtils.getUidKey(toUid);
+        temp.forEach((vKey,value)->{
+            String rs = EncryptionDecryptionUtils.encrypt(key, value);
+            CommEvent.wirteToclient(rs,channel);
+        });
+        rMap.clear();
 
     }
 

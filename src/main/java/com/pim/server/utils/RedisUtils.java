@@ -20,7 +20,7 @@ public class RedisUtils {
         if (cluser == 0) {
             config.useSingleServer().
                     setDatabase(db).
-                    setConnectionMinimumIdleSize(10).
+                    setConnectionMinimumIdleSize(100).
                     setConnectionPoolSize(500)
                     .setAddress(address);
         } else if (cluser == 1) {

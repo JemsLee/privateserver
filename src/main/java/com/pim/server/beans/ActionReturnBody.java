@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class ActionReturnBody {
 
-    String eventId = "";//事件ID，参考事件ID文件
-    String inEventId = "";//发送者的事件ID，可以为空
-    String eStatus = "";//状态
-    String cTimest = "";//客户端发送时间戳
-    String sTimest = "";//服务端发送时间戳
-    String resDesc = "";//回复消息内容
+    String eventId = "";//Event ID, refer to the event ID file
+    String inEventId = "";//Sender's event ID, can be empty
+    String eStatus = "";//Status
+    String cTimest = ""; //Client sends timestamp
+    String sTimest = "";//The server sends the timestamp
+    String resDesc = ""; //Reply message content
 
 }

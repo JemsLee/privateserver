@@ -63,6 +63,9 @@ public class E1000000 {
             String rs = CommEvent.createActionReturn("Login successful", "OK", messageBody.getCTimest(), messageBody.getEventId());
             CommEvent.wirteToclient(rs, channel);
 
+            //send off line message
+            CommEvent.sendOfflineMessage(fromUid,channel);
+
         }catch (Exception exception){
             exception.printStackTrace();
         }
