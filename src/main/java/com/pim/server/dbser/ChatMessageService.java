@@ -119,7 +119,7 @@ public class ChatMessageService {
                 " a.ids DESC LIMIT "+start+",8";
 
 
-        System.out.println(sql);
+        //System.out.println(sql);
 
         Connection conn = null;
         PreparedStatement ptmt = null;

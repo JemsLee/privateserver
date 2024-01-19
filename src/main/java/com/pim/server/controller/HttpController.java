@@ -12,10 +12,7 @@ import com.pim.server.beans.HttpResBody;
 import com.pim.server.dbser.ChatMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -30,23 +27,20 @@ public class HttpController {
 
     @PostMapping("/savemessage")
     public String saveMessage(@RequestParam("data") String data) {
-        System.out.println(data);
-
         String rs = makeResString("savemessage",1,"ok");
         return rs;
     }
 
 
     @PostMapping("/getchatlist")
+    @CrossOrigin(origins = "*")
     public String getChatList(@RequestParam("data") String data) {
-        System.out.println(data);
+        //System.out.println(data);
         JSONObject jsonObject = JSONObject.parseObject(data);
         String rs = ChatMessageService.getChatList(jsonObject.getString("from_uid"),jsonObject.getString("to_uid"),jsonObject.getInteger("start_page"));
-        System.out.println(rs);
+        //System.out.println(rs);
         return rs;
     }
-
-
 
     @PostMapping("/fileupload")
     public String fileupload(@RequestParam("imgFile") MultipartFile file, @RequestParam("imgName") String name) throws Exception {
@@ -73,9 +67,9 @@ public class HttpController {
     }
 
 
-    private final static String MY_ACCESS_KEY_ID = "AKIAZI6K2VO6IYXQUSVY";
-    private final static String MY_PICTURE_BUCKET = "momolive";
-    private final static String MY_SECRET_KEY = "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";
+    private final static String MY_ACCESS_KEY_ID = "xxxxxxxx";
+    private final static String MY_PICTURE_BUCKET = "xxxx";
+    private final static String MY_SECRET_KEY = "xxx+xxxxxx/xxxxxxxxxxxx";
 
     private String uploadFile(String filepath,String fileName){
         int code = -1;
@@ -86,7 +80,7 @@ public class HttpController {
             try {
                 System.out.println(Thread.currentThread().getName() + "执行上传:" + filepath);
 
-                String fileNameToUpload = "imchatimg/"+fileName;
+                String fileNameToUpload = "xxx/"+fileName;
                 AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(MY_ACCESS_KEY_ID, MY_SECRET_KEY));
                 PutObjectRequest request = new PutObjectRequest(MY_PICTURE_BUCKET, fileNameToUpload, file);
                 request.setCannedAcl(CannedAccessControlList.PublicRead);
@@ -103,7 +97,7 @@ public class HttpController {
         }
         file.delete();
 
-        String rs = "https://momolive.s3.ap-southeast-1.amazonaws.com/imchatimg/"+fileName;
+        String rs = "https://xxxx.xxxx.com/imchatimg/"+fileName;
         return rs;
     }
 }
