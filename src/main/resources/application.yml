@@ -11,14 +11,14 @@ spring:
 
 redis:
   test:
-    ip: pre-momo-redis.9zoaxv.ng.0001.apse1.cache.amazonaws.com
+    ip: www.eee.com
     port: 6379
     user:
     password:
     db: 15
     iscluster: 0
   pro:
-    ip: newlive-java.9zoaxv.clustercfg.apse1.cache.amazonaws.com
+    ip: www.eee.com
     port: 6379
     user:
     password:
