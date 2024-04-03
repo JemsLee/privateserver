@@ -20,21 +20,23 @@ public class E1000000 {
         try {
 
             String fromUid = messageBody.getFromUid();
-
-            if (!RedisUtils.instance().getRedissonClient().getBucket("token_list:" + fromUid, new StringCodec()).isExists()) {
-                String rs = CommEvent.createActionReturn("Token NULL", "ERROR", messageBody.getCTimest(), messageBody.getEventId());
-                log.error(fromUid + "Token NULL");
-                CommEvent.wirteToclient(rs, channel);
-                return;
-            }
-
-            String userToken = RedisUtils.instance().getRedissonClient().getBucket("token_list:" + fromUid, new StringCodec()).get().toString();
             String clientToken = messageBody.getToken();
-            if (userToken.indexOf(clientToken) == -1) {
-                String rs = CommEvent.createActionReturn("Token Error", "ERROR", messageBody.getCTimest(), messageBody.getEventId());
-                log.error(fromUid + "Token Error");
-                CommEvent.wirteToclient(rs, channel);
-                return;
+            if(!clientToken.equals("0000")) {
+                if (!RedisUtils.instance().getRedissonClient().getBucket("token_list:" + fromUid, new StringCodec()).isExists()) {
+                    String rs = CommEvent.createActionReturn("Token NULL", "ERROR", messageBody.getCTimest(), messageBody.getEventId());
+                    log.error(fromUid + "Token NULL");
+                    CommEvent.wirteToclient(rs, channel);
+                    return;
+                }
+
+                String userToken = RedisUtils.instance().getRedissonClient().getBucket("token_list:" + fromUid, new StringCodec()).get().toString();
+
+                if (userToken.indexOf(clientToken) == -1) {
+                    String rs = CommEvent.createActionReturn("Token Error", "ERROR", messageBody.getCTimest(), messageBody.getEventId());
+                    log.error(fromUid + "Token Error");
+                    CommEvent.wirteToclient(rs, channel);
+                    return;
+                }
             }
 
             //Determine whether the user is connected to this server. If the link is in the status, kick it down.

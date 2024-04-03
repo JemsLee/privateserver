@@ -15,4 +15,5 @@ public class RedisPropertyForPro {
     String password;
     int db;
     int iscluster;
+
 }

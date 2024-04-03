@@ -1,31 +1,28 @@
 server:
   port: 6038
-  tomcat:
-    max-http-form-post-size: 20MB
 
-spring:
-   servlet:
-      multipart:
-        max-request-size: 20MB
-        max-file-size: 20MB
 
 redis:
   test:
-    ip: www.eee.com
+    ip: 172.30.2.214
     port: 6379
-    user:
-    password:
-    db: 15
+    user: bvc
+    password: YHzcGN7r532QnEyc
+    db: 6
+    iscluster: 0
+  pre:
+    ip: 172.30.2.214
+    port: 6379
+    user: bvc
+    password: YHzcGN7r532QnEyc
+    db: 6
     iscluster: 0
   pro:
-    ip: www.eee.com
+    ip: newlive-java.9zoaxv.clustercfg.apse1.cache.amazonaws.com
     port: 6379
     user:
     password:
     db: 1
     iscluster: 1
-
-
-
 
 

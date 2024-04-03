@@ -43,12 +43,16 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
     @Override
     public void run(String... args) throws Exception {
 
+        System.out.println(args[0]);
         String[] inputParas = args[0].split(",");
 
-        if(inputParas.length == 3) {
+        if(inputParas.length == 4) {
+
             int run_time = Integer.parseInt(inputParas[0]);
             CommParameters.instance().setServerIp(inputParas[1]);
             CommParameters.instance().setServerPort(Integer.parseInt(inputParas[2]));
+            CommParameters.instance().setImUser(inputParas[3]);
+            CommParameters.instance().setTransitType(Integer.parseInt(inputParas[4]));
 
             //init Redis
             intiRedis(run_time);
@@ -62,20 +66,30 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
             //Redis publish and subscribe
             CommEvent.setPublish();
 
+
+            CommEvent.setServerStatus("up");
+
+            CommEvent.connectToOtherServer();
+
         }
     }
 
     @Override
     public void onApplicationEvent(ContextClosedEvent contextClosedEvent) {
         //When the server is shut down, clean up the users linked to this server
+        CommEvent.setServerStatus("down");
         CommEvent.clearAllUserInfo();
+        RedisUtils.instance().stop();
+
     }
 
     private void intiRedis(int run_time){
-        if (run_time == 1) {
-            RedisUtils.instance().init(redisPropertyForTest.getIp(),redisPropertyForTest.getPort(),redisPropertyForTest.getDb(),redisPropertyForTest.getIscluster());
+        if (run_time == 1) {  //String ip,String user,String pwd, int port, int db, int cluser
+            RedisUtils.instance().init(redisPropertyForTest.getIp(),redisPropertyForTest.getUser(),redisPropertyForTest.getPassword(),redisPropertyForTest.getPort(),
+                    redisPropertyForTest.getDb(), redisPropertyForTest.getIscluster());
         }else {
-            RedisUtils.instance().init(redisPropertyForPro.getIp(),redisPropertyForPro.getPort(),redisPropertyForPro.getDb(),redisPropertyForPro.getIscluster());
+            RedisUtils.instance().init(redisPropertyForPro.getIp(),redisPropertyForPro.getUser(),redisPropertyForPro.getPassword(),redisPropertyForPro.getPort(),
+                    redisPropertyForPro.getDb(), redisPropertyForPro.getIscluster());
         }
     }
 

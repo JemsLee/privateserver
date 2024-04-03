@@ -12,19 +12,21 @@ public class RedisUtils {
     public RedisUtils() {
     }
 
-    public void init(String ip, int port, int db, int cluser) {
+    public void init(String ip,String user,String pwd, int port, int db, int cluser) {
 
         Config config = new Config();
         String address = "redis://" + ip + ":" + port;
         System.out.println("Start connecting redis:" + address + "  db index:" + db);
         if (cluser == 0) {
             config.useSingleServer().
+                    setUsername(user).setPassword(pwd).
                     setDatabase(db).
-                    setConnectionMinimumIdleSize(100).
+                    setConnectionMinimumIdleSize(10).
                     setConnectionPoolSize(500)
                     .setAddress(address);
         } else if (cluser == 1) {
             config.useClusterServers()
+                    .setUsername(user).setPassword(pwd)
                     .setMasterConnectionMinimumIdleSize(10)
                     .setMasterConnectionPoolSize(1000)
                     .setSlaveConnectionMinimumIdleSize(10)
@@ -41,11 +43,15 @@ public class RedisUtils {
 
         System.out.println("Successful connected redis:" + address + "  db index:" + db);
 
-        CommParameters.instance().setRedisOk(true);
+        CommParameters.instance().setRedisIsOk(true);
     }
 
     public RedissonClient getRedissonClient() {
         return redisson;
+    }
+
+    public void stop(){
+        redisson.shutdown();
     }
 
     private static RedisUtils redisUtils;

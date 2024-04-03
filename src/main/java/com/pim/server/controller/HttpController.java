@@ -3,11 +3,6 @@ package com.pim.server.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.pim.server.beans.HttpResBody;
 import com.pim.server.dbser.ChatMessageService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +17,6 @@ import java.io.File;
 @RestController
 @RequestMapping("/")
 public class HttpController {
-
 
 
     @PostMapping("/savemessage")
@@ -67,9 +61,9 @@ public class HttpController {
     }
 
 
-    private final static String MY_ACCESS_KEY_ID = "xxxxxxxx";
-    private final static String MY_PICTURE_BUCKET = "xxxx";
-    private final static String MY_SECRET_KEY = "xxx+xxxxxx/xxxxxxxxxxxx";
+    private final static String MY_ACCESS_KEY_ID = "AKIAZI6K2VO6GAMBO3WI";
+    private final static String MY_PICTURE_BUCKET = "momolive";
+    private final static String MY_SECRET_KEY = "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";
 
     private String uploadFile(String filepath,String fileName){
         int code = -1;
@@ -80,13 +74,13 @@ public class HttpController {
             try {
                 System.out.println(Thread.currentThread().getName() + "执行上传:" + filepath);
 
-                String fileNameToUpload = "xxx/"+fileName;
-                AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(MY_ACCESS_KEY_ID, MY_SECRET_KEY));
-                PutObjectRequest request = new PutObjectRequest(MY_PICTURE_BUCKET, fileNameToUpload, file);
-                request.setCannedAcl(CannedAccessControlList.PublicRead);
-                PutObjectResult result = s3Client.putObject(request);
+                String fileNameToUpload = "imchatimg/"+fileName;
+//                AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(MY_ACCESS_KEY_ID, MY_SECRET_KEY));
+//                PutObjectRequest request = new PutObjectRequest(MY_PICTURE_BUCKET, fileNameToUpload, file);
+//                request.setCannedAcl(CannedAccessControlList.PublicRead);
+//                PutObjectResult result = s3Client.putObject(request);
                 code = 0;
-                System.out.println(filepath + "上传完成：OK" +result.getContentMd5());
+//                System.out.println(filepath + "上传完成：OK" +result.getContentMd5());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -97,7 +91,7 @@ public class HttpController {
         }
         file.delete();
 
-        String rs = "https://xxxx.xxxx.com/imchatimg/"+fileName;
+        String rs = "https://momolive.s3.ap-southeast-1.amazonaws.com/imchatimg/"+fileName;
         return rs;
     }
 }

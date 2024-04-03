@@ -46,16 +46,21 @@ public class E1000001 {
                 String serverIp = userInfoCache.get("serverIp");
                 String serverPort = userInfoCache.get("serverPort");
 
-                String publishKey = serverIp + "_" + serverPort + "_message";
-
-                RTopic rTopic = RedisUtils.instance().getRedissonClient().getTopic(publishKey, new SerializationCodec());
-                PublishMessageBody publishMessageBody = new PublishMessageBody();
-                publishMessageBody.setToUid(toUid);
-                publishMessageBody.setMessage(json.toJSONString());
-                rTopic.publish(publishMessageBody);
+                if(CommParameters.instance().getTransitType() == 0) {
+                    //The first mode is through the internal socket.
+                    // This mode is suitable for environments with sufficient network bandwidth.
+                    String server = "ws://" + serverIp + ":" + serverPort;
+                    CommParameters.instance().getOnlineServer().get(server).sendMessageNoEncr(json.toJSONString());
+                }else if(CommParameters.instance().getTransitType() == 1) {
+                    //The second mode is through Redis publishing and subscription.
+                    // This mode is suitable for environments with powerful Redis configuration.
+                    String publishKey = serverIp + "_" + serverPort + "_message";
+                    CommEvent.sendToOtherServerThrowRedisPublish(publishKey,toUid,json.toJSONString());
+                }
 
             }else {
 
+                //If the user is not online, determine whether offline messages are stored
                 if(Integer.parseInt(messageBody.getIsCache()) == 1){
                     LinkedList<String> linkedList = CommParameters.instance().getTempOfflineMessage().get(toUid);
                     if(linkedList == null){

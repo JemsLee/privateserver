@@ -1,5 +1,6 @@
 package com.pim.server.constants;
 
+import com.pim.server.client.PriImClient;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 
@@ -45,13 +46,18 @@ public class CommParameters {
 
 
 
-    boolean redisOk= false;
+    boolean redisIsOk= false;
 
     String serverIp = "";
     int serverPort = -1;
+    String imUser = "";
+    //消息中转机制，0=内部Socket中转， 1=通过Redis的发布和订阅
+    int transitType = 0;
 
     ConcurrentHashMap<String, String> onlineUser = new ConcurrentHashMap<>();
+    ConcurrentHashMap<String, PriImClient> onlineServer = new ConcurrentHashMap<>();
     ConcurrentHashMap<String, LinkedList<String>> tempOfflineMessage = new ConcurrentHashMap<>();
+
 
 
     public HikariDataSource liveDataSource;

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.pim.server.beans.ActionReturnBody;
 import com.pim.server.beans.PublishMessageBody;
 import com.pim.server.beans.PublishOffLineBody;
+import com.pim.server.client.PriImClient;
 import com.pim.server.constants.CommParameters;
 import com.pim.server.message.MessageService;
 import com.pim.server.netty.PrivateChannelSupervise;
@@ -76,6 +77,10 @@ public class CommEvent {
     }
 
     public static void clearLocalUserInfo(String fromUid){
+        //clear user ID locally
+        CommParameters.instance().getOnlineUser().remove(fromUid);
+
+        //clear redis cache
         if(RedisUtils.instance().getRedissonClient().getMap(fromUid + "_online").isExists()){
             RedisUtils.instance().getRedissonClient().getMap(fromUid + "_online").delete();
             PrivateChannelSupervise.offline(fromUid);
@@ -188,6 +193,60 @@ public class CommEvent {
         });
         rMap.clear();
 
+    }
+
+
+    public static void setServerStatus(String type){
+
+        String serverkey = CommParameters.instance().getServerIp() + "_" + CommParameters.instance().getServerPort();
+        if(type.contains("up")){
+            RedisUtils.instance().getRedissonClient().getMap("imserver_cluster").put(serverkey,TimeUtils.getDateTime());
+        }else if(type.contains("down")){
+            RedisUtils.instance().getRedissonClient().getMap("imserver_cluster").remove(serverkey);
+        }
+
+    }
+
+    public static void connectToOtherServer(){
+
+        String serverKey = "imserver_cluster";
+        RMap<String,String>  rMap = RedisUtils.instance().getRedissonClient().getMap(serverKey);
+        Map<String,String> temp = rMap.readAllMap();
+        temp.forEach((vKey,value)->{
+            String[] arr = vKey.split("_");
+            String serverIp = arr[0];
+            int port = Integer.parseInt(arr[1]);
+
+            if(serverIp.equals(CommParameters.instance().getServerIp()) && port == CommParameters.instance().getServerPort() ){
+            }else {
+
+                String server = "ws://"+serverIp+":"+port;
+
+                if (!CommParameters.instance().getOnlineServer().containsKey(server)) {
+                    PriImClient priImClient = new PriImClient();
+                    System.out.println("server=" + server);
+                    priImClient.serverIp = server;
+                    priImClient.fromUid = CommParameters.instance().getImUser();
+                    priImClient.init();
+                    CommParameters.instance().getOnlineServer().put(server,priImClient);
+                }
+
+
+            }
+
+
+        });
+
+
+    }
+
+
+    public static void sendToOtherServerThrowRedisPublish(String publishKey,String toUid,String json){
+        RTopic rTopic = RedisUtils.instance().getRedissonClient().getTopic(publishKey, new SerializationCodec());
+        PublishMessageBody publishMessageBody = new PublishMessageBody();
+        publishMessageBody.setToUid(toUid);
+        publishMessageBody.setMessage(json);
+        rTopic.publish(publishMessageBody);
     }
 
 
