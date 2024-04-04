@@ -2,12 +2,18 @@ Private im server  support cluster version 1.0.0
 
 This is a message server based on Netty WebSocket. It also requires Redis as the basic message service, supports large-scale deployment, and supports millions of users.
 
+Operating environment:<br>
+1. Jdk11<br>
+2. Springboot2.2.4<br>
+3. Redis<br>
+
 ❶→Startup parameter case:
 <1,127.0.0.1,9922,0>
 -1: Describes the operating environment. This version supports test, pre-release, and production lines.
 -127.0.0.1: Server IP running the IM service
 -9922: Indicates the listening port of the server
 -0: Indicates the message forwarding mechanism between clusters, 0/1 0=uses the built-in Socket as the communication mechanism between clusters, 1=uses Redis subscription and publishing as the communication mechanism between clusters
+
 
 
 
