@@ -214,32 +214,38 @@ public class CommEvent {
 
     public static void connectToOtherServer(){
 
-        String serverKey = "imserver_cluster";
-        RMap<String,String>  rMap = RedisUtils.instance().getRedissonClient().getMap(serverKey);
-        Map<String,String> temp = rMap.readAllMap();
-        temp.forEach((vKey,value)->{
-            String[] arr = vKey.split("_");
-            String serverIp = arr[0];
-            int port = Integer.parseInt(arr[1]);
+        if (CommParameters.instance().isRedisIsOk()) {
+            try {
 
-            if(serverIp.equals(CommParameters.instance().getServerIp()) && port == CommParameters.instance().getServerPort() ){
-            }else {
+                String serverKey = "imserver_cluster";
+                RMap<String, String> rMap = RedisUtils.instance().getRedissonClient().getMap(serverKey);
+                Map<String, String> temp = rMap.readAllMap();
+                temp.forEach((vKey, value) -> {
+                    String[] arr = vKey.split("_");
+                    String serverIp = arr[0];
+                    int port = Integer.parseInt(arr[1]);
 
-                String server = "ws://"+serverIp+":"+port;
+                    if (serverIp.equals(CommParameters.instance().getServerIp()) && port == CommParameters.instance().getServerPort()) {
+                    } else {
 
-                if (!CommParameters.instance().getOnlineServer().containsKey(server)) {
-                    PriImClient priImClient = new PriImClient();
-                    priImClient.serverIp = server;
-                    priImClient.fromUid = CommParameters.instance().getImUser();
-                    priImClient.init();
-                    CommParameters.instance().getOnlineServer().put(server,priImClient);
-                }
+                        String server = "ws://" + serverIp + ":" + port;
 
+                        if (!CommParameters.instance().getOnlineServer().containsKey(server)) {
+                            PriImClient priImClient = new PriImClient();
+                            priImClient.serverIp = server;
+                            String userFrom = CommParameters.instance().getServerIp()+":"+CommParameters.instance().getServerPort();
+                            String userTo = serverIp + ":"+ port;
+                            priImClient.fromUid = userFrom + "-->" + userTo;
+                            priImClient.init();
+                            CommParameters.instance().getOnlineServer().put(server, priImClient);
+                        }
+                    }
+                });
+            }catch (Exception e){
 
             }
 
-
-        });
+        }
 
 
     }

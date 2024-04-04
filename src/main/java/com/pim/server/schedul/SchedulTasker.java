@@ -13,7 +13,11 @@ public class SchedulTasker {
     @Async
     public void checkOtherServer() {
         if (CommParameters.instance().isRedisIsOk()) {
-            CommEvent.connectToOtherServer();
+            if(!CommParameters.instance().isConnectingOtherServer()) {
+                CommParameters.instance().setConnectingOtherServer(true);
+                CommEvent.connectToOtherServer();
+                CommParameters.instance().setConnectingOtherServer(false);
+            }
         }
     }
 

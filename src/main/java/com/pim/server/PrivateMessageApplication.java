@@ -46,13 +46,14 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
         System.out.println(args[0]);
         String[] inputParas = args[0].split(",");
 
-        if(inputParas.length == 5) {
+        if(inputParas.length == 4) {
 
-            int run_time = Integer.parseInt(inputParas[0]);
+            //1,127.0.0.1,9922,923000001,0
+
+            int run_time = Integer.parseInt(inputParas[0]); //1-tes  2-pre  3-pro
             CommParameters.instance().setServerIp(inputParas[1]);
             CommParameters.instance().setServerPort(Integer.parseInt(inputParas[2]));
-            CommParameters.instance().setImUser(inputParas[3]);
-            CommParameters.instance().setTransitType(Integer.parseInt(inputParas[4]));
+            CommParameters.instance().setTransitType(Integer.parseInt(inputParas[3]));
 
 
             //init Redis
@@ -68,18 +69,23 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
             CommEvent.setServerStatus("up");
 
             //throw socket connect to otherr imserver
+            CommParameters.instance().setConnectingOtherServer(true);
             CommEvent.connectToOtherServer();
+            CommParameters.instance().setConnectingOtherServer(false);
 
         }
     }
 
     @Override
     public void onApplicationEvent(ContextClosedEvent contextClosedEvent) {
-        //When the server is shut down, clean up the users linked to this server
-        CommEvent.setServerStatus("down");
-        CommEvent.clearAllUserInfo();
-        RedisUtils.instance().stop();
-
+        try {
+            //When the server is shut down, clean up the users linked to this server
+            CommEvent.setServerStatus("down");
+            CommEvent.clearAllUserInfo();
+            RedisUtils.instance().stop();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void intiRedis(int run_time){

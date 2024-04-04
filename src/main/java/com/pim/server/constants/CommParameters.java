@@ -44,10 +44,10 @@ public class CommParameters {
     }
 
     boolean redisIsOk= false;
+    boolean isConnectingOtherServer = false;
 
     String serverIp = "";
     int serverPort = -1;
-    String imUser = "";
     //消息中转机制，0=内部Socket中转， 1=通过Redis的发布和订阅
     int transitType = 0;
 

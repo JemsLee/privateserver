@@ -3,23 +3,23 @@ server:
 
 
 redis:
-  test:
+  test: #test environment
     ip: 172.30.2.214
     port: 6379
     user: bvc
     password: YHzcGN7r532QnEyc
     db: 6
     iscluster: 0
-  pre:
+  pre: #Pre-release environment
     ip: 172.30.2.214
     port: 6379
     user: bvc
     password: YHzcGN7r532QnEyc
     db: 6
     iscluster: 0
-  pro:
-    ip: newlive-java.9zoaxv.clustercfg.apse1.cache.amazonaws.com
-    port: 6379
+  pro: #Production Environment
+    ip:
+    port:
     user:
     password:
     db: 1

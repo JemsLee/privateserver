@@ -30,9 +30,13 @@ public class PrivateWebSocketHandler extends SimpleChannelInboundHandler<Object>
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        String fromUid = PrivateChannelSupervise.getUserId(ctx.channel());
-        if(fromUid != null){
-            CommEvent.clearLocalUserInfo(fromUid);
+        try {
+            String fromUid = PrivateChannelSupervise.getUserId(ctx.channel());
+            if(fromUid != null){
+                CommEvent.clearLocalUserInfo(fromUid);
+            }
+        }catch (Exception e){
+
         }
     }
 
@@ -44,18 +48,28 @@ public class PrivateWebSocketHandler extends SimpleChannelInboundHandler<Object>
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        String fromUid = PrivateChannelSupervise.getUserId(ctx.channel());
-        if(fromUid != null){
-            CommEvent.clearLocalUserInfo(fromUid);
+        try {
+            String fromUid = PrivateChannelSupervise.getUserId(ctx.channel());
+            if(fromUid != null){
+                CommEvent.clearLocalUserInfo(fromUid);
+            }
+        }catch (Exception e){
+
         }
+
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        String fromUid = PrivateChannelSupervise.getUserId(ctx.channel());
-        if(fromUid != null){
-            CommEvent.clearLocalUserInfo(fromUid);
+        try {
+            String fromUid = PrivateChannelSupervise.getUserId(ctx.channel());
+            if(fromUid != null){
+                CommEvent.clearLocalUserInfo(fromUid);
+            }
+        }catch (Exception e){
+
         }
+
     }
 
     @Override
