@@ -9,7 +9,10 @@ import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.client.codec.StringCodec;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
@@ -20,7 +23,16 @@ public class E1000000 {
         try {
 
             String fromUid = messageBody.getFromUid();
-            String clientToken = messageBody.getToken();
+
+            if(messageBody.getDeviceId().trim().length() == 0){
+                String rs = CommEvent.createActionReturn("DeviceId NULL", "ERROR", messageBody.getCTimest(), messageBody.getEventId());
+                log.error(fromUid + "DeviceId NULL");
+                CommEvent.wirteToclient(rs, channel);
+                return;
+            }
+
+
+            String clientToken = messageBody.getToken(); //token = 0000 is server user
             if(!clientToken.equals("0000")) {
                 if (!RedisUtils.instance().getRedissonClient().getBucket("token_list:" + fromUid, new StringCodec()).isExists()) {
                     String rs = CommEvent.createActionReturn("Token NULL", "ERROR", messageBody.getCTimest(), messageBody.getEventId());
@@ -56,11 +68,11 @@ public class E1000000 {
             userInfoCache.put("loginTime", TimeUtils.getDateTime());
             userInfoCache.put("serverIp", CommParameters.instance().getServerIp());
             userInfoCache.put("serverPort", CommParameters.instance().getServerPort() + "");
+            userInfoCache.put("channelId",channel.id().asLongText());
             RedisUtils.instance().getRedissonClient().getMap(fromUid + "_online").putAll(userInfoCache);
 
             //Cache user ID locally
             CommParameters.instance().getOnlineUser().put(fromUid, TimeUtils.getTimeSt());
-
 
             String rs = CommEvent.createActionReturn("Login successful", "OK", messageBody.getCTimest(), messageBody.getEventId());
             CommEvent.wirteToclient(rs, channel);

@@ -5,10 +5,9 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 
 import java.util.LinkedList;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.concurrent.*;
 
 @Data
 public class CommParameters {
@@ -30,7 +29,7 @@ public class CommParameters {
     }
 
     private static final int CORE_POOL_SIZE = 200;
-    private static final int MAX_POOL_SIZE = 10000;
+    private static final int MAX_POOL_SIZE = 20000;
     private static final int QUEUE_CAPACITY = 1;
     private static final Long KEEP_ALIVE_TIME = 1L;
     ThreadPoolExecutor executor;
@@ -44,8 +43,6 @@ public class CommParameters {
                 new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
-
-
     boolean redisIsOk= false;
 
     String serverIp = "";
@@ -54,11 +51,11 @@ public class CommParameters {
     //消息中转机制，0=内部Socket中转， 1=通过Redis的发布和订阅
     int transitType = 0;
 
+    boolean isSaveingCache = false;
+
+
     ConcurrentHashMap<String, String> onlineUser = new ConcurrentHashMap<>();
     ConcurrentHashMap<String, PriImClient> onlineServer = new ConcurrentHashMap<>();
-    ConcurrentHashMap<String, LinkedList<String>> tempOfflineMessage = new ConcurrentHashMap<>();
-
-
 
     public HikariDataSource liveDataSource;
 

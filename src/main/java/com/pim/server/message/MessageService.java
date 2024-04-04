@@ -2,6 +2,7 @@ package com.pim.server.message;
 
 import com.alibaba.fastjson.JSON;
 import com.pim.server.beans.MessageBody;
+import com.pim.server.constants.CommParameters;
 import com.pim.server.events.*;
 import com.pim.server.netty.PrivateChannelSupervise;
 import com.pim.server.utils.EncryptionDecryptionUtils;
@@ -29,8 +30,6 @@ public class MessageService extends Thread{
             String key = EncryptionDecryptionUtils.getUidKey(fromUid);
             clientMessage = EncryptionDecryptionUtils.decrypt(key,clientMessage);
         }
-
-
 
 
         //Pretend to be an object
@@ -85,11 +84,7 @@ public class MessageService extends Thread{
         }
 
 
-
-
     }
-
-
 
 
 }

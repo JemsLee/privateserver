@@ -9,22 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class SchedulTasker {
 
-    @Scheduled(cron = "0/10 * * * * ?")
-    @Async
-    public void checkPingTimes() {
-        CommParameters.instance().getTempOfflineMessage().forEach((userId,linkedList)->{
-            CacheMessageHelper cacheMessageHelper = new CacheMessageHelper();
-            cacheMessageHelper.userId = userId;
-            cacheMessageHelper.linkedList = linkedList;
-            CommParameters.instance().getExecutor().execute(cacheMessageHelper);
-        });
-    }
-
     @Scheduled(cron = "0/3 * * * * ?")
     @Async
     public void checkOtherServer() {
-        if(CommParameters.instance().isRedisIsOk()) {
+        if (CommParameters.instance().isRedisIsOk()) {
             CommEvent.connectToOtherServer();
         }
     }
+
 }

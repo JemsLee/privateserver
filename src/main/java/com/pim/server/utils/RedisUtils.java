@@ -22,7 +22,7 @@ public class RedisUtils {
                     setUsername(user).setPassword(pwd).
                     setDatabase(db).
                     setConnectionMinimumIdleSize(10).
-                    setConnectionPoolSize(500)
+                    setConnectionPoolSize(2000)
                     .setAddress(address);
         } else if (cluser == 1) {
             config.useClusterServers()

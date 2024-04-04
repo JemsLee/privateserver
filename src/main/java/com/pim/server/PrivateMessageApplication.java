@@ -9,6 +9,7 @@ import com.pim.server.utils.RedisUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.client.codec.StringCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -41,18 +42,19 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
 
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args)  {
 
         System.out.println(args[0]);
         String[] inputParas = args[0].split(",");
 
-        if(inputParas.length == 4) {
+        if(inputParas.length == 5) {
 
             int run_time = Integer.parseInt(inputParas[0]);
             CommParameters.instance().setServerIp(inputParas[1]);
             CommParameters.instance().setServerPort(Integer.parseInt(inputParas[2]));
             CommParameters.instance().setImUser(inputParas[3]);
             CommParameters.instance().setTransitType(Integer.parseInt(inputParas[4]));
+
 
             //init Redis
             intiRedis(run_time);
@@ -66,9 +68,10 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
             //Redis publish and subscribe
             CommEvent.setPublish();
 
-
+            //server up status
             CommEvent.setServerStatus("up");
 
+            //throw socket connect to otherr imserver
             CommEvent.connectToOtherServer();
 
         }
@@ -91,6 +94,7 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
             RedisUtils.instance().init(redisPropertyForPro.getIp(),redisPropertyForPro.getUser(),redisPropertyForPro.getPassword(),redisPropertyForPro.getPort(),
                     redisPropertyForPro.getDb(), redisPropertyForPro.getIscluster());
         }
+
     }
 
     private void initSocketServer()  {

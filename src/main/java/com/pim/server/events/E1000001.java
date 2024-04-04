@@ -8,11 +8,14 @@ import com.pim.server.dbser.ChatMessageService;
 import com.pim.server.netty.PrivateChannelSupervise;
 import com.pim.server.utils.EncryptionDecryptionUtils;
 import com.pim.server.utils.RedisUtils;
+import com.pim.server.utils.TimeUtils;
 import io.netty.channel.Channel;
 import org.redisson.api.RTopic;
 import org.redisson.codec.SerializationCodec;
 
-import java.util.LinkedList;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 
 public class E1000001 {
@@ -27,7 +30,7 @@ public class E1000001 {
         JSONObject json = (JSONObject) JSONObject.toJSON(messageBody);
 
         //Save chat message for web
-        ChatMessageService.save(messageBody);
+        //ChatMessageService.save(messageBody);
 
 
         Channel channel = PrivateChannelSupervise.getChannelByUserId(toUid);
@@ -60,14 +63,18 @@ public class E1000001 {
 
             }else {
 
+
                 //If the user is not online, determine whether offline messages are stored
                 if(Integer.parseInt(messageBody.getIsCache()) == 1){
-                    LinkedList<String> linkedList = CommParameters.instance().getTempOfflineMessage().get(toUid);
-                    if(linkedList == null){
-                        linkedList = new LinkedList<>();
+                    try {
+                        String offlineKey = toUid + "_offline";
+                        int randomNumber = new Random().nextInt(10000);
+                        RedisUtils.instance().getRedissonClient().getMap(offlineKey).put(TimeUtils.getNanoTime()+""+randomNumber,json.toJSONString());
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                    linkedList.addFirst(json.toJSONString());
-                    CommParameters.instance().getTempOfflineMessage().put(toUid,linkedList);
+
+
                 }
 
             }

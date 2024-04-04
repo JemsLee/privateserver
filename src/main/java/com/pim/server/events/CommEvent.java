@@ -46,23 +46,27 @@ public class CommEvent {
     }
 
     public static void wirteToclient(String rs,Channel channel){
-        TextWebSocketFrame tws = new TextWebSocketFrame(rs);
-        channel.writeAndFlush(tws);
+        if(channel != null) {
+            TextWebSocketFrame tws = new TextWebSocketFrame(rs);
+            channel.writeAndFlush(tws);
+        }
     }
 
 
     public static boolean checkUserOnlione(String fromUid){
+        boolean isOnline = false;
         Channel channel = PrivateChannelSupervise.getChannelByUserId(fromUid);
         if(channel != null){
-            String rs = CommEvent.createActionReturn("kicked offline", "OK", TimeUtils.getTimeSt(), "1000004");
+            String rs = CommEvent.createActionReturn("kicked offline", "OK", TimeUtils.getTimeSt(), "3000001");
             wirteToclient(rs,channel);
             channel.disconnect();
             clearUserInfo(fromUid);
+            isOnline = true;
         }else {
             //The link is on another server and needs to be notified to go offline.
             return checkUserOnOtherServer(fromUid);
         }
-        return false;
+        return isOnline;
     }
 
     public static void clearUserInfo(String fromUid){
@@ -133,12 +137,12 @@ public class CommEvent {
         userStatus.addListener(PublishOffLineBody.class, (charSequence, publishOffLineBody) -> {
             try {
                 String fromUid = publishOffLineBody.getFromUid();
-                CommEvent.clearUserInfo(fromUid);
-                String rs = CommEvent.createActionReturn("kicked offline", "OK", TimeUtils.getTimeSt(), "1000004");
+                String rs = CommEvent.createActionReturn("kicked offline", "OK", TimeUtils.getTimeSt(), "3000001");
                 Channel channel = PrivateChannelSupervise.getChannelByUserId(fromUid);
                 CommEvent.wirteToclient(rs, channel);
                 Thread.sleep(500);
                 channel.disconnect();
+                CommEvent.clearUserInfo(fromUid);
             }catch (Exception exception){
                 exception.printStackTrace();
             }
@@ -224,7 +228,6 @@ public class CommEvent {
 
                 if (!CommParameters.instance().getOnlineServer().containsKey(server)) {
                     PriImClient priImClient = new PriImClient();
-                    System.out.println("server=" + server);
                     priImClient.serverIp = server;
                     priImClient.fromUid = CommParameters.instance().getImUser();
                     priImClient.init();

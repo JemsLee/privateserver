@@ -49,7 +49,7 @@ public class PriImClient implements PriObserver {
                 CommParameters.instance().getOnlineServer().put(serverIp,this);
             }
         }
-        System.out.println("im message received:" + message);
+        System.out.println(serverIp + " im message received:" + message);
 
     }
 
