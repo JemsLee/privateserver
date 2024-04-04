@@ -26,7 +26,7 @@ Operating environment:<br>
 2. Please refer to application.yml for Redis configuration. You can specify parameters for the test environment, pre-release environment, and production environment respectively.<br>
 
 ❸→Deployment method<br>
-1. Jar startup command case<br>
+1. Jar startup command case<br><br>
 java -jar privateimserver-1.0.0-SNAPSHOT.jar 1,127.0.0.1,9922,0 --server.port=8047 -server -Xmx3550m -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintGCDetails -XX:+PrintGCDateStamps<br>
 <br>
 java -jar privateimserver-1.0.0-SNAPSHOT.jar 1,127.0.0.1,9955,0 --server.port=8049 -server -Xmx3550m -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintGCDetails -XX:+PrintGCDateStamps<br>
