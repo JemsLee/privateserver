@@ -34,4 +34,11 @@ java -jar privateimserver-1.0.0-SNAPSHOT.jar 1,127.0.0.1,9966,0 --server.port=80
 <br>
 
 Please refer to the docker deployment operation process for how to start docker mode.<br>
-<br><br>
+<br>
+<br>
+<br>
+→Test client<br>
+https://github.com/JemsLee/privateclient
+<br>
+<br>
+<br>
