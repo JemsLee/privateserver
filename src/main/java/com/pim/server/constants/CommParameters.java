@@ -51,13 +51,9 @@ public class CommParameters {
     //消息中转机制，0=内部Socket中转， 1=通过Redis的发布和订阅
     int transitType = 0;
 
-    boolean isSaveingCache = false;
-
-
     ConcurrentHashMap<String, String> onlineUser = new ConcurrentHashMap<>();
     ConcurrentHashMap<String, PriImClient> onlineServer = new ConcurrentHashMap<>();
 
-    public HikariDataSource liveDataSource;
 
 
 }

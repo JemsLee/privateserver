@@ -1,7 +1,6 @@
 package com.pim.server.events;
 
 import com.pim.server.beans.MessageBody;
-import com.pim.server.dbser.ChatMessageService;
 import com.pim.server.utils.EncryptionDecryptionUtils;
 import com.pim.server.utils.RedisUtils;
 import io.netty.channel.Channel;

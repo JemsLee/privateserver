@@ -58,9 +58,6 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
             //init Redis
             intiRedis(run_time);
 
-            //init mysql
-            initHikari();
-
             //init websocket server
             initSocketServer();
 
@@ -107,27 +104,6 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
         }
 
     }
-
-
-    /**
-     * Database connection pool configuration
-     */
-    private void initHikari() {
-
-        HikariConfig config_live = null;
-        config_live = new HikariConfig("/hikari_test_chat.properties");
-
-        //The maximum waiting time when obtaining a connection from the connection pool, in milliseconds, the default value is 30 seconds, at least 250ms
-        config_live.setConnectionTimeout(60000);
-        //The maximum number of connections that can be reserved in the connection pool, for example: 100, then the number of connections in the connection pool cannot exceed 100
-        config_live.setMaximumPoolSize(30);
-        //Minimum number of idle connections, default 10, that is to say, up to 10 idle connections can be retained in the connection pool, and more will be closed
-        config_live.setIdleTimeout(3);
-
-        CommParameters.instance().setLiveDataSource(new HikariDataSource(config_live));
-
-    }
-
 
 
 
