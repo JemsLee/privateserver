@@ -4,24 +4,24 @@ server:
 
 redis:
   test: #test environment
-    ip: 172.30.2.214
+    ip: xxx.xxx.xxx.xxx
     port: 6379
-    user: bvc
-    password: YHzcGN7r532QnEyc
+    user: user
+    password: 9HzcGN7r532QnEyc
     db: 6
     iscluster: 0
   pre: #Pre-release environment
-    ip: 172.30.2.214
+    ip: xxx.xxx.xxx.xxx
     port: 6379
-    user: bvc
-    password: YHzcGN7r532QnEyc
-    db: 6
+    user: user
+    password: 9HzcGN7r532QnEyc
+    db: 7
     iscluster: 0
   pro: #Production Environment
-    ip:
-    port:
-    user:
-    password:
+    ip: xxx.xxx.xxx.xxx
+    port: 6379
+    user: user
+    password: 9HzcGN7r532QnEyc
     db: 1
     iscluster: 1
 
