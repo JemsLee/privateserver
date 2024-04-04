@@ -4,10 +4,10 @@ import com.pim.server.client.PriImClient;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Data
 public class CommParameters {

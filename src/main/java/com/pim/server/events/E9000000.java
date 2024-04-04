@@ -1,6 +1,5 @@
 package com.pim.server.events;
 
-import com.alibaba.fastjson.JSONObject;
 import com.pim.server.beans.MessageBody;
 import com.pim.server.constants.CommParameters;
 import com.pim.server.utils.RedisUtils;

@@ -2,7 +2,6 @@ package com.pim.server.client.socket;
 
 
 import com.alibaba.fastjson.JSONObject;
-
 import com.pim.server.beans.MessageBody;
 import com.pim.server.client.observer.PriManagerSubject;
 import com.pim.server.utils.EncryptionDecryptionUtils;
@@ -13,7 +12,9 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class PriWebSocketClient extends WebSocketClient {

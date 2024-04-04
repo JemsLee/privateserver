@@ -5,12 +5,10 @@ import com.pim.server.beans.MessageBody;
 import com.pim.server.client.socket.PriWebSocketClient;
 import com.pim.server.utils.EncryptionDecryptionUtils;
 
-
-import javax.net.ssl.*;
-import java.net.Socket;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 import java.net.URI;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.LinkedList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

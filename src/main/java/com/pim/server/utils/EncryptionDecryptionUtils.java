@@ -2,7 +2,6 @@ package com.pim.server.utils;
 
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.AES;
-import org.apache.commons.codec.digest.Crypt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
