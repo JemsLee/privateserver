@@ -13,9 +13,6 @@ public class E5000004 {
     public static void sendMessageToGroup(MessageBody messageBody, Channel channel) {
 
 
-        //Save chat message for web
-        ChatMessageService.save(messageBody);
-
         String groupId = messageBody.getGroupId();
         String fromUid = messageBody.getFromUid();
         String key = EncryptionDecryptionUtils.getUidKey(fromUid);

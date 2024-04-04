@@ -23,9 +23,6 @@ public class E1000001 {
 
         JSONObject json = (JSONObject) JSONObject.toJSON(messageBody);
 
-        //Save chat message for web
-        //ChatMessageService.save(messageBody);
-
 
         Channel channel = PrivateChannelSupervise.getChannelByUserId(toUid);
 
