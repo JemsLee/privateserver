@@ -2,6 +2,7 @@ package com.pim.server.schedul;
 
 import com.pim.server.constants.CommParameters;
 import com.pim.server.events.CommEvent;
+import com.pim.server.utils.TimeUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,14 @@ public class SchedulTasker {
                 CommParameters.instance().setConnectingOtherServer(false);
             }
         }
+    }
+
+
+    @Scheduled(cron = "0/59 * * * * ?")
+    @Async
+    public void handleGC() {
+        System.out.println("exec gc:"+ TimeUtils.getDateTime());
+        System.gc();
     }
 
 }

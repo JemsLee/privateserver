@@ -1,7 +1,6 @@
 package com.pim.server.constants;
 
 import com.pim.server.client.PriImClient;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -28,7 +27,7 @@ public class CommParameters {
         return commParameters;
     }
 
-    private static final int CORE_POOL_SIZE = 200;
+    private static final int CORE_POOL_SIZE = 10;
     private static final int MAX_POOL_SIZE = 20000;
     private static final int QUEUE_CAPACITY = 1;
     private static final Long KEEP_ALIVE_TIME = 1L;
@@ -48,7 +47,7 @@ public class CommParameters {
 
     String serverIp = "";
     int serverPort = -1;
-    //消息中转机制，0=内部Socket中转， 1=通过Redis的发布和订阅
+    //Message transfer mechanism, 0=internal Socket transfer, 1=publication and subscription through Redis
     int transitType = 0;
 
     ConcurrentHashMap<String, String> onlineUser = new ConcurrentHashMap<>();

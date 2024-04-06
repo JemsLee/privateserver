@@ -6,8 +6,6 @@ import com.pim.server.netty.PrivateWebSocketServer;
 import com.pim.server.property.RedisPropertyForPro;
 import com.pim.server.property.RedisPropertyForTest;
 import com.pim.server.utils.RedisUtils;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

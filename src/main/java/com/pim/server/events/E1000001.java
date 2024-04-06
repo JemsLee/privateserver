@@ -20,12 +20,8 @@ public class E1000001 {
     public static void sendMessageToClient(MessageBody messageBody) {
 
         String toUid = messageBody.getToUid();
-
-        JSONObject json = (JSONObject) JSONObject.toJSON(messageBody);
-
-
         Channel channel = PrivateChannelSupervise.getChannelByUserId(toUid);
-
+        JSONObject json = (JSONObject) JSONObject.toJSON(messageBody);
         if (channel != null) {
 
             String key = EncryptionDecryptionUtils.getUidKey(toUid);
@@ -54,7 +50,6 @@ public class E1000001 {
 
             }else {
 
-
                 //If the user is not online, determine whether offline messages are stored
                 if(Integer.parseInt(messageBody.getIsCache()) == 1){
                     try {
@@ -65,10 +60,11 @@ public class E1000001 {
                         e.printStackTrace();
                     }
 
-
                 }
 
             }
         }
+
+        messageBody = null;
     }
 }

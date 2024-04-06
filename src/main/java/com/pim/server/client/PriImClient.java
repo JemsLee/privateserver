@@ -13,10 +13,10 @@ public class PriImClient implements PriObserver {
 
 
 
-    public String fromUid = "1001_30320";
+    public String fromUid = "";
     public String token = "0000";
     public String deviceId = TimeUtils.getNanoTime() + "";
-    public String serverIp = "wss://im.polarmeta.cc"; //预发布IM
+    public String serverIp = ""; //预发布IM
 
     public PriManager priManager;
 
