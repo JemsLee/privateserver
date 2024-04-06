@@ -51,6 +51,7 @@ public class RedisUtils {
     }
 
     public void stop(){
+        CommParameters.instance().setRedisIsOk(false);
         redisson.shutdown();
     }
 

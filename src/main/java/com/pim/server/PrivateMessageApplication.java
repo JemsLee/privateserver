@@ -81,6 +81,7 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
             CommEvent.setServerStatus("down");
             CommEvent.clearAllUserInfo();
             RedisUtils.instance().stop();
+
         }catch (Exception e){
             e.printStackTrace();
         }

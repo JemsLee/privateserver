@@ -2,6 +2,7 @@ package com.pim.server.constants;
 
 import com.pim.server.client.PriImClient;
 import lombok.Data;
+import org.redisson.api.RLock;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,6 +53,7 @@ public class CommParameters {
 
     ConcurrentHashMap<String, String> onlineUser = new ConcurrentHashMap<>();
     ConcurrentHashMap<String, PriImClient> onlineServer = new ConcurrentHashMap<>();
+
 
 
 

@@ -1,28 +1,30 @@
-server:
-  port: 6038
-
 
 redis:
   test: #test environment
     ip: xxx.xxx.xxx.xxx
     port: 6379
-    user: user
-    password: 9HzcGN7r532QnEyc
+    user: xxxxx
+    password: xxxxxxxxxx
     db: 6
     iscluster: 0
   pre: #Pre-release environment
     ip: xxx.xxx.xxx.xxx
     port: 6379
-    user: user
-    password: 9HzcGN7r532QnEyc
+    user: xxxxx
+    password: xxxxxxxxxx
     db: 7
     iscluster: 0
   pro: #Production Environment
     ip: xxx.xxx.xxx.xxx
     port: 6379
-    user: user
-    password: 9HzcGN7r532QnEyc
+    user: xxxxx
+    password: xxxxxxxxxx
     db: 1
     iscluster: 1
 
 
+spring:
+  task:
+    scheduling:
+      pool:
+        size: 20

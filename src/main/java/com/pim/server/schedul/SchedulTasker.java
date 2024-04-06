@@ -7,10 +7,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class SchedulTasker {
 
-    @Scheduled(cron = "0/3 * * * * ?")
+    @Scheduled(fixedRate = 3000)
     @Async
     public void checkOtherServer() {
         if (CommParameters.instance().isRedisIsOk()) {
@@ -23,11 +24,13 @@ public class SchedulTasker {
     }
 
 
-    @Scheduled(cron = "0/59 * * * * ?")
+    @Scheduled(fixedRate = 60000)
     @Async
     public void handleGC() {
         System.out.println("exec gc:"+ TimeUtils.getDateTime());
         System.gc();
     }
+
+
 
 }
