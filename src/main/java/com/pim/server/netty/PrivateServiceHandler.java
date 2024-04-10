@@ -17,11 +17,8 @@ public class PrivateServiceHandler extends ChannelInboundHandlerAdapter {
                 default:
                     break;
             }
-
         }
     }
-
-
 
 }
 

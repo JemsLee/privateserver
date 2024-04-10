@@ -5,6 +5,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -20,7 +21,7 @@ public class PrivateWebSocketChannelInitializer extends ChannelInitializer<Socke
 
     @Override
     protected void initChannel(SocketChannel ch) {
-        ch.pipeline().addLast("logging", new LoggingHandler("DEBUG"));
+        ch.pipeline().addLast("logging", new LoggingHandler(LogLevel.DEBUG));
         ch.pipeline().addLast("http-codec", new HttpServerCodec());
         ch.pipeline().addLast("aggregator", new HttpObjectAggregator(65536 * 5));
         ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());

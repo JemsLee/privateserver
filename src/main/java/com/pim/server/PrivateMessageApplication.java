@@ -16,7 +16,7 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
-@EnableScheduling  //扫描定时器
+@EnableScheduling
 @SpringBootApplication
 public class PrivateMessageApplication implements CommandLineRunner, ApplicationListener<ContextClosedEvent> {
 
@@ -55,7 +55,7 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
 
 
             //init Redis
-            intiRedis(run_time);
+            initRedis(run_time);
 
             //init websocket server
             initSocketServer();
@@ -87,7 +87,7 @@ public class PrivateMessageApplication implements CommandLineRunner, Application
         }
     }
 
-    private void intiRedis(int run_time){
+    private void initRedis(int run_time){
         if (run_time == 1) {  //String ip,String user,String pwd, int port, int db, int cluser
             RedisUtils.instance().init(redisPropertyForTest.getIp(),redisPropertyForTest.getUser(),redisPropertyForTest.getPassword(),redisPropertyForTest.getPort(),
                     redisPropertyForTest.getDb(), redisPropertyForTest.getIscluster());

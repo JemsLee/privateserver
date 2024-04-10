@@ -18,9 +18,6 @@ import org.redisson.api.RMap;
 import org.redisson.api.RTopic;
 import org.redisson.codec.SerializationCodec;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentMap;
@@ -173,19 +170,6 @@ public class CommEvent {
     }
 
 
-    public static void closeDbConn(Connection conn, PreparedStatement ptmt, ResultSet rs) {
-        try {
-            if (rs != null)
-                rs.close();
-            if (ptmt != null)
-                ptmt.close();
-            if (conn != null)
-                conn.close();
-        } catch (Exception e) {
-        }
-    }
-
-
     public static void sendOfflineMessage(String toUid,Channel channel){
 
         String offlineKey = toUid + "_offline";
@@ -231,13 +215,14 @@ public class CommEvent {
                         String server = "ws://" + serverIp + ":" + port;
 
                         if (!CommParameters.instance().getOnlineServer().containsKey(server)) {
+
                             PriImClient priImClient = new PriImClient();
                             priImClient.serverIp = server;
                             String userFrom = CommParameters.instance().getServerIp()+":"+CommParameters.instance().getServerPort();
                             String userTo = serverIp + ":"+ port;
-                            priImClient.fromUid = userFrom + "-->" + userTo;
+                            priImClient.fromUid = userFrom + "=>" + userTo;
                             priImClient.init();
-                            CommParameters.instance().getOnlineServer().put(server, priImClient);
+
                         }
                     }
                 });
